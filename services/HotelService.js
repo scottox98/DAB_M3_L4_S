@@ -29,35 +29,35 @@ class HotelService {
     }
 
     //Get hotel details using raw SQL	
-    async getHotelDetails(hotelId) {
+    async getHotelDetails(hotelId, userId) {
         //Retrive hotel data
         const hotel = await sequelize.query('SELECT h.id, h.Name, h.Location, ROUND(AVG(r.Value), 1) AS AvgRate FROM hotels h LEFT JOIN rates r ON h.id = r.HotelId WHERE h.id = :hotelId', {
-            replacements:
-            {
-                hotelId: hotelId
-            },
-            type: QueryTypes.SELECT,
+        replacements:
+        {
+        hotelId: hotelId
+        },
+        type: QueryTypes.SELECT,
         });
-
+        
         //Retrive user rating count
         const userRateCount = await sequelize.query('SELECT COUNT(*) as Rated FROM rates WHERE HotelId = :hotelId AND UserId = :userId;', {
-            replacements:
-            {
-                hotelId: hotelId,
-                userId: 1
-            },
-            type: QueryTypes.SELECT,
+        replacements:
+        {
+        hotelId: hotelId,
+        userId: userId
+        },
+        type: QueryTypes.SELECT,
         });
-
+        
         //Check if user has rated this hotel.
         if (userRateCount[0].Rated > 0) {
-            hotel[0].Rated = true;
-        } else {
-            hotel[0].Rated = false;
+        hotel[0].Rated = true; }
+        else {
+        hotel[0].Rated = false;
         }
-
+        
         return hotel[0];
-    }
+        }
 
     //Delete a hotel using raw SQL
     async deleteHotel(hotelId) {

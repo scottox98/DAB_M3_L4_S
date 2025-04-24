@@ -57,19 +57,17 @@ class RoomService {
 
     //Rent a specified room using raw SQL
     async rentARoom(userId, roomId, startDate, endDate) {
-        sequelize.query('INSERT INTO reservations (StartDate, EndDate, RoomId, UserId) VALUES (:StartDate, :EndDate, :RoomId, :UserId)', {
-            replacements:
-            {
-                StartDate: startDate,
-                EndDate: endDate,
-                RoomId: roomId,
-                UserId: userId
-            }
-        }).then(result => {
-            return result
-        }).catch(err => {
-            return (err)
-        })
+        sequelize.query('CALL insert_reservation(:UserId, :RoomId, :StartDate, :EndDate)',{ replacements:
+        {
+        RoomId: roomId,
+        UserId: userId,
+        StartDate: startDate,
+        EndDate: endDate
+        }}).then( result => {
+        return result
+            }).catch( err => {
+                return (err)
+            })
     }
 }
 module.exports = RoomService;
