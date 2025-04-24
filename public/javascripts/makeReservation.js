@@ -1,6 +1,8 @@
 async function makeReservation(userId, roomId, url) {
     let pattern = /^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01]) ([01][0-9]|(2[0-3])):([0-5][0-9]):([0-5][0-9])$/
     let startDate = prompt("Please provide starting date in format YYYY-MM-DD HH:MM:SS")
+    if (startDate === null)
+        return;
     if(!pattern.test(startDate)) {
         alert("Wrong date format");
         return;
