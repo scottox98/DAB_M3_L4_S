@@ -48,7 +48,7 @@ class HotelService {
         if (hotel !=null){
             hotel.avg = hotel.Users.map(x => x.Rate.dataValues.Value)
             .reduce((a,b) => a+b,0) / hotel.Users.length;
-            hotel.rated = hotel.sers.filter(x=>dataValues.id == userId).length>0;
+            hotel.rated = hotel.Users.filter(x=>x.dataValues.id == userId).length>0;
         }
         return hotel;
         }
@@ -74,5 +74,11 @@ class HotelService {
             console.log(err);
         })
 }
+    async getBestRate(){
+        return await this.Rate.findOne({
+            order:[
+                ['Value','Desc']]
+        })
+    }
 }
 module.exports = HotelService;

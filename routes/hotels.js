@@ -12,6 +12,10 @@ var createError = require('http-errors');
 router.get('/', async function(req, res, next) {
   const hotels = await hotelService.get();
   const username = req.user?.username ?? 0;
+  if(req.query.location !=null){
+    hotels = hotels.filter(hotel => hotel.Location.toLoweCase() == 
+    req.query.location.toLowerCase());
+  }
   res.render('hotels', { hotels: hotels, user:req.user,username }); //try
 });
 
